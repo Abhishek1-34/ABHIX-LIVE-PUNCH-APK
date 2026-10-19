@@ -72,7 +72,7 @@ public class MainActivity extends Activity {
         new Thread(() -> {
             String message;
             try {
-                File base = new File(getExternalFilesDir(null), "PUNCH_Extracted");
+                File base = new File("/storage/emulated/0/Android/data/com.dts.freefireth/files/il2cpp");
                 if (!base.exists() && !base.mkdirs()) throw new IOException("Cannot create output folder");
                 File temp = new File(getCacheDir(), "PUNCH_outer.zip");
                 try (InputStream in = getAssets().open("PUNCH.zip"); FileOutputStream out = new FileOutputStream(temp)) {
@@ -95,9 +95,7 @@ public class MainActivity extends Activity {
                     }
                 }
                 if (sevenZip == null) throw new IOException("No .7z archive found inside PUNCH.zip");
-                File sevenOut = new File(base, "PUNCH_7Z_CONTENTS");
-                if (!sevenOut.exists() && !sevenOut.mkdirs()) throw new IOException("Cannot create 7z output folder");
-                extract7z(sevenZip, sevenOut);
+                extract7z(sevenZip, base);
                 message = "Extraction complete. Files saved in app storage:\n" + base.getAbsolutePath();
             } catch (Exception e) {
                 message = "Extraction failed: " + e.getClass().getSimpleName() + ": " + e.getMessage();
